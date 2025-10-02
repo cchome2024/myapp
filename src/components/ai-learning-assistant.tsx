@@ -50,76 +50,42 @@ export function AILearningAssistant() {
     }
   }, [selectedProject, projects])
 
-  // 自动进度处理 - 只在用户点击开始生成后执行
-  useEffect(() => {
-    if (isProcessing && currentStep !== "idle" && currentStep !== "complete") {
-      const stepOrder: ProcessingStep[] = ["parsing", "indexing", "summary", "quiz", "images", "ppt", "complete"]
-      const currentIndex = stepOrder.indexOf(currentStep)
-      
-      if (currentIndex < stepOrder.length - 1) {
-        const nextStep = stepOrder[currentIndex + 1]
-        const delay = currentStep === "parsing" ? 2000 : 
-                     currentStep === "indexing" ? 1500 : 
-                     currentStep === "summary" ? 3000 : 
-                     currentStep === "quiz" ? 2000 : 
-                     currentStep === "images" ? 2500 : 
-                     currentStep === "ppt" ? 2000 : 1000
-
-        const timer = setTimeout(() => {
-          setCurrentStep(nextStep)
-          if (nextStep === "complete") {
-            setIsProcessing(false)
-            toast({
-              title: "处理完成",
-              description: "所有内容已生成完成！",
-            })
-          }
-        }, delay)
-
-        return () => clearTimeout(timer)
-      }
-    }
-  }, [currentStep, isProcessing, toast])
-
-  const handleProjectSelect = (projectId: string, status: "draft" | "processing" | "complete" | "error") => {
-    setSelectedProject(projectId)
-    // 选择项目时不自动开始处理，保持idle状态
+  const handleProjectSelect = (id: string, status: "draft" | "processing" | "complete" | "error") => {
+    setSelectedProject(id)
     setCurrentStep("idle")
-    setIsProcessing(false)
   }
 
   const handleNewProject = () => {
-    const newProjectName = `新项目 - ${new Date().toLocaleDateString("zh-CN")}`
-    setProjectName(newProjectName)
-    setSelectedProject(null)
+    const newProject: Project = {
+      id: `project-${Date.now()}`,
+      name: "新项目",
+      date: new Date().toLocaleDateString(),
+      status: "draft",
+    }
+    setProjects((prev) => [newProject, ...prev])
+    setSelectedProject(newProject.id)
     setCurrentStep("idle")
-    setIsProcessing(false)
+  }
+
+  const handleStepChange = (step: ProcessingStep) => {
+    setCurrentStep(step)
   }
 
   const handleProjectNameChange = (name: string) => {
     setProjectName(name)
     if (selectedProject) {
-      // 更新项目名称
-      const updatedProjects = projects.map((p) => (p.id === selectedProject ? { ...p, name } : p))
-      setProjects(updatedProjects)
-      toast({
-        title: "项目已更新",
-        description: `项目已重命名为 "${name}"`,
-      })
+      setProjects((prev) =>
+        prev.map((p) => (p.id === selectedProject ? { ...p, name } : p))
+      )
     }
-  }
-
-  const handleStepChange = (step: ProcessingStep) => {
-    setCurrentStep(step)
-    if (step === "idle") {
-      setIsProcessing(false)
-    } else if (step === "parsing") {
-      setIsProcessing(true)
-    }
+    toast({
+      title: "项目名称已更新",
+      description: `项目已重命名为 "${name}"`,
+    })
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background overflow-hidden">
       {/* Left Sidebar */}
       <Sidebar
         projects={projects}
@@ -128,7 +94,7 @@ export function AILearningAssistant() {
         onNewProject={handleNewProject}
       />
 
-      <div className="flex flex-1 min-w-0">
+      <div className="flex flex-1 min-w-0 min-h-0">
         {/* Main Workspace */}
         <Workspace
           currentStep={currentStep}

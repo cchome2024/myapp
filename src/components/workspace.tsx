@@ -72,53 +72,55 @@ export function Workspace({
   }
 
   return (
-    <main className="flex-1 overflow-auto bg-muted/30">
-      <div className="mx-auto max-w-4xl space-y-5 p-8">
-        <div className="rounded-lg border bg-card p-4 shadow-sm">
-          <div className="flex items-center gap-3">
-            {isEditing ? (
-              <>
-                <Input
-                  value={editedName}
-                  onChange={(e) => setEditedName(e.target.value)}
-                  placeholder="输入项目名称..."
-                  className="flex-1 text-lg font-semibold"
-                  autoFocus
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleSave()
-                    if (e.key === "Escape") handleCancel()
-                  }}
-                />
-                <Button size="icon" variant="ghost" onClick={handleAutoGenerate} title="AI 自动生成名称">
-                  <Sparkles className="h-4 w-4" />
-                </Button>
-                <Button size="icon" variant="ghost" onClick={handleSave}>
-                  <Check className="h-4 w-4 text-emerald-600" />
-                </Button>
-                <Button size="icon" variant="ghost" onClick={handleCancel}>
-                  <X className="h-4 w-4 text-destructive" />
-                </Button>
-              </>
-            ) : (
-              <>
-                <h1 className="flex-1 text-lg font-semibold text-foreground">{projectName || "未命名项目"}</h1>
-                <Button size="icon" variant="ghost" onClick={handleStartEdit}>
-                  <Edit2 className="h-4 w-4" />
-                </Button>
-              </>
-            )}
+    <main className="flex-1 flex flex-col min-h-0 bg-muted/30">
+      <div className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-4xl space-y-5 p-8">
+          <div className="rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              {isEditing ? (
+                <>
+                  <Input
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    placeholder="输入项目名称..."
+                    className="flex-1 text-lg font-semibold"
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleSave()
+                      if (e.key === "Escape") handleCancel()
+                    }}
+                  />
+                  <Button size="icon" variant="ghost" onClick={handleAutoGenerate} title="AI 自动生成名称">
+                    <Sparkles className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="ghost" onClick={handleSave}>
+                    <Check className="h-4 w-4 text-emerald-600" />
+                  </Button>
+                  <Button size="icon" variant="ghost" onClick={handleCancel}>
+                    <X className="h-4 w-4 text-destructive" />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <h1 className="flex-1 text-lg font-semibold text-foreground">{projectName || "未命名项目"}</h1>
+                  <Button size="icon" variant="ghost" onClick={handleStartEdit}>
+                    <Edit2 className="h-4 w-4" />
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
-        </div>
 
-        <UploadSection selectedProject={selectedProject} />
-        <OptionsSection
-          webSearchEnabled={webSearchEnabled}
-          onWebSearchChange={onWebSearchChange}
-          currentStep={currentStep}
-          onStepChange={onStepChange}
-        />
-        <StreamingFeedback isActive={currentStep !== "idle" && currentStep !== "complete"} />
-        <ProgressSection currentStep={currentStep} />
+          <UploadSection selectedProject={selectedProject} />
+          <OptionsSection
+            webSearchEnabled={webSearchEnabled}
+            onWebSearchChange={onWebSearchChange}
+            currentStep={currentStep}
+            onStepChange={onStepChange}
+          />
+          <StreamingFeedback isActive={currentStep !== "idle" && currentStep !== "complete"} />
+          <ProgressSection currentStep={currentStep} />
+        </div>
       </div>
     </main>
   )

@@ -2,7 +2,6 @@
 
 import { FileText, HelpCircle, ImageIcon, FileSliders as FileSlides, Link, Rocket } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { SummaryTab } from "./tabs/summary-tab"
 import { QuizTab } from "./tabs/quiz-tab"
 import { PPTTab } from "./tabs/ppt-tab"
@@ -37,13 +36,15 @@ export function ResultsPanel({ currentStep, webSearchEnabled, selectedProject }:
   }
 
   return (
-    <aside className="hidden w-96 flex-col border-l bg-card lg:flex">
+    <aside className="hidden w-96 flex-col border-l bg-card lg:flex h-full">
       <div className="flex h-full flex-col">
+        {/* 固定头部 */}
         <div className="flex-shrink-0 border-b p-5 shadow-sm">
           <h2 className="font-semibold text-lg">生成结果</h2>
         </div>
 
         <Tabs defaultValue="summary" className="flex flex-1 min-h-0 flex-col">
+          {/* 固定标签栏 */}
           <div className="flex-shrink-0 border-b bg-muted/30 px-5 pt-2">
             <TabsList className="w-full justify-start bg-transparent">
               <TabsTrigger value="summary" className="gap-2">
@@ -75,29 +76,28 @@ export function ResultsPanel({ currentStep, webSearchEnabled, selectedProject }:
             </TabsList>
           </div>
 
-          <div className="flex-1 min-h-0">
-            <ScrollArea className="h-full">
-              <TabsContent value="summary" className="m-0 p-5">
-                <SummaryTab currentStep={currentStep} projectId={selectedProject} />
+          {/* 可滚动内容区域 - 使用原生滚动 */}
+          <div className="flex-1 min-h-0 overflow-y-auto">
+            <TabsContent value="summary" className="m-0 p-5">
+              <SummaryTab currentStep={currentStep} projectId={selectedProject} />
+            </TabsContent>
+            <TabsContent value="quiz" className="m-0 p-5">
+              <QuizTab currentStep={currentStep} projectId={selectedProject} />
+            </TabsContent>
+            <TabsContent value="ppt" className="m-0 p-5">
+              <PPTTab currentStep={currentStep} projectId={selectedProject} />
+            </TabsContent>
+            <TabsContent value="images" className="m-0 p-5">
+              <ImagesTab currentStep={currentStep} projectId={selectedProject} />
+            </TabsContent>
+            <TabsContent value="publish" className="m-0 p-5">
+              <PublishTab currentStep={currentStep} projectId={selectedProject} />
+            </TabsContent>
+            {webSearchEnabled && (
+              <TabsContent value="references" className="m-0 p-5">
+                <ReferencesTab />
               </TabsContent>
-              <TabsContent value="quiz" className="m-0 p-5">
-                <QuizTab currentStep={currentStep} projectId={selectedProject} />
-              </TabsContent>
-              <TabsContent value="ppt" className="m-0 p-5">
-                <PPTTab currentStep={currentStep} projectId={selectedProject} />
-              </TabsContent>
-              <TabsContent value="images" className="m-0 p-5">
-                <ImagesTab currentStep={currentStep} projectId={selectedProject} />
-              </TabsContent>
-              <TabsContent value="publish" className="m-0 p-5">
-                <PublishTab currentStep={currentStep} projectId={selectedProject} />
-              </TabsContent>
-              {webSearchEnabled && (
-                <TabsContent value="references" className="m-0 p-5">
-                  <ReferencesTab />
-                </TabsContent>
-              )}
-            </ScrollArea>
+            )}
           </div>
         </Tabs>
       </div>
