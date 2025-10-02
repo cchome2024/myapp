@@ -32,25 +32,31 @@ export function OptionsSection({
   const [quizCount, setQuizCount] = useState(10)
 
   const handleStartGeneration = () => {
-    // 开始生成，触发进度显示
+    // 开始生成，模拟完整的进度流程
     onStepChange("parsing")
+    setTimeout(() => onStepChange("indexing"), 2000)
+    setTimeout(() => onStepChange("summary"), 4000)
+    setTimeout(() => onStepChange("quiz"), 6000)
+    setTimeout(() => onStepChange("images"), 8000)
+    setTimeout(() => onStepChange("ppt"), 10000)
+    setTimeout(() => onStepChange("complete"), 12000)
   }
 
   const handleSummaryOnly = () => {
     // 仅生成摘要
     onStepChange("parsing")
-    setTimeout(() => onStepChange("indexing"), 1000)
-    setTimeout(() => onStepChange("summary"), 2000)
-    setTimeout(() => onStepChange("complete"), 3000)
+    setTimeout(() => onStepChange("indexing"), 1500)
+    setTimeout(() => onStepChange("summary"), 3000)
+    setTimeout(() => onStepChange("complete"), 4500)
   }
 
   const handleQuizOnly = () => {
     // 仅生成Quiz
     onStepChange("parsing")
-    setTimeout(() => onStepChange("indexing"), 1000)
-    setTimeout(() => onStepChange("summary"), 2000)
-    setTimeout(() => onStepChange("quiz"), 3000)
-    setTimeout(() => onStepChange("complete"), 4000)
+    setTimeout(() => onStepChange("indexing"), 1500)
+    setTimeout(() => onStepChange("summary"), 3000)
+    setTimeout(() => onStepChange("quiz"), 4500)
+    setTimeout(() => onStepChange("complete"), 6000)
   }
 
   const isProcessing = currentStep !== "idle" && currentStep !== "complete"

@@ -1,8 +1,7 @@
-"use client"
+﻿"use client"
 
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sparkles } from "lucide-react"
 
 interface StreamingFeedbackProps {
@@ -30,10 +29,10 @@ export function StreamingFeedback({ isActive }: StreamingFeedbackProps) {
 4. 深度学习入门
 
 现在我将为您生成：
-✓ 结构化的章节摘要
-✓ 针对性的测试题目
-✓ 配套的可视化图表
-✓ 完整的演示文稿
+ 结构化的章节摘要
+ 针对性的测试题目
+ 配套的可视化图表
+ 完整的演示文稿
 
 预计处理时间：约2-3分钟
 请稍候，我会实时更新处理进度...`
@@ -62,13 +61,13 @@ export function StreamingFeedback({ isActive }: StreamingFeedbackProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-48 rounded-lg border bg-muted/50 p-4">
+        <div className="h-48 overflow-y-auto rounded-lg border bg-muted/50 p-4">
           {streamedText ? (
-            <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">{streamedText}</div>
+            <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground break-words">{streamedText}</div>
           ) : (
             <div className="flex h-full items-center justify-center text-sm text-muted-foreground">等待开始处理...</div>
           )}
-        </ScrollArea>
+        </div>
       </CardContent>
     </Card>
   )

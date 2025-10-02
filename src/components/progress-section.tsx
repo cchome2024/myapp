@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { ChevronDown, CheckCircle2, Circle, Loader2 } from "lucide-react"
@@ -23,13 +23,35 @@ const steps = [
   { id: "complete", label: "完成" },
 ]
 
-const mockLogs = [
-  { time: "14:32:01", message: "开始解析文档..." },
-  { time: "14:32:03", message: "文档解析完成，共识别 45 页内容" },
-  { time: "14:32:04", message: "开始建立索引..." },
-  { time: "14:32:06", message: "索引建立完成" },
-  { time: "14:32:07", message: "开始生成摘要..." },
-]
+const mockLogs: { [key: string]: { time: string; message: string }[] } = {
+  parsing: [
+    { time: "14:32:01", message: "开始解析文档..." },
+    { time: "14:32:03", message: "文档解析完成，共识别 45 页内容" },
+  ],
+  indexing: [
+    { time: "14:32:04", message: "开始建立索引..." },
+    { time: "14:32:06", message: "索引建立完成" },
+  ],
+  summary: [
+    { time: "14:32:07", message: "开始生成摘要..." },
+    { time: "14:32:15", message: "摘要生成完成" },
+  ],
+  quiz: [
+    { time: "14:32:16", message: "开始生成Quiz题目..." },
+    { time: "14:32:22", message: "Quiz题目生成完成" },
+  ],
+  images: [
+    { time: "14:32:23", message: "开始生成配图..." },
+    { time: "14:32:30", message: "配图生成完成" },
+  ],
+  ppt: [
+    { time: "14:32:31", message: "开始生成PPT..." },
+    { time: "14:32:40", message: "PPT生成完成" },
+  ],
+  complete: [
+    { time: "14:32:41", message: "所有任务完成！" },
+  ],
+}
 
 export function ProgressSection({ currentStep }: ProgressSectionProps) {
   const [logsOpen, setLogsOpen] = useState(false)
@@ -37,6 +59,7 @@ export function ProgressSection({ currentStep }: ProgressSectionProps) {
   if (currentStep === "idle") return null
 
   const currentStepIndex = steps.findIndex((s) => s.id === currentStep)
+  const displayedLogs = mockLogs[currentStep] || []
 
   return (
     <Card className="shadow-sm">
@@ -92,7 +115,7 @@ export function ProgressSection({ currentStep }: ProgressSectionProps) {
           <CollapsibleContent className="mt-4">
             <ScrollArea className="h-40 rounded-lg border bg-muted/50 p-4 shadow-inner">
               <div className="space-y-2 font-mono text-xs">
-                {mockLogs.map((log, index) => (
+                {displayedLogs.map((log, index) => (
                   <div key={index} className="flex gap-3">
                     <span className="text-muted-foreground">[{log.time}]</span>
                     <span className="text-foreground">{log.message}</span>
