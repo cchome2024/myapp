@@ -1,0 +1,23 @@
+[
+  {
+    "id": "slide1",
+    "title": "机器学习介绍",
+    "thumbnail": "https://picsum.photos/300/200?random=10",
+    "content": "机器学习的基本概念和应用介绍",
+    "order": 1
+  },
+  {
+    "id": "slide2",
+    "title": "监督学习",
+    "thumbnail": "https://picsum.photos/300/200?random=11",
+    "content": "理解监督学习算法",
+    "order": 2
+  },
+  {
+    "id": "slide3",
+    "title": "无监督学习",
+    "thumbnail": "https://picsum.photos/300/200?random=12",
+    "content": "探索无监督学习技术",
+    "order": 3
+  }
+]

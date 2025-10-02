@@ -1,0 +1,37 @@
+{
+  "urls": [
+    "https://example.com/tutorial1",
+    "https://example.com/documentation",
+    "https://example.com/code-repo",
+    "https://example.com/paper"
+  ],
+  "prompts": {
+    "summary": "请生成一个关于数据科学的详细摘要",
+    "images": "请生成相关的图表和示意图",
+    "ppt": "请创建演示文稿",
+    "custom": "自定义内容要求2"
+  },
+  "files": [
+    {
+      "filename": "learning-materials.pdf",
+      "originalName": "学习资料.pdf",
+      "mime": "application/pdf",
+      "size": 2500000,
+      "uploadedAt": "2025-10-01T16:15:17.743Z"
+    },
+    {
+      "filename": "code-examples.zip",
+      "originalName": "代码示例.zip",
+      "mime": "application/zip",
+      "size": 1200000,
+      "uploadedAt": "2025-10-01T16:15:17.743Z"
+    },
+    {
+      "filename": "dataset.csv",
+      "originalName": "数据集.csv",
+      "mime": "text/csv",
+      "size": 5800000,
+      "uploadedAt": "2025-10-01T16:15:17.743Z"
+    }
+  ]
+}

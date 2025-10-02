@@ -1,0 +1,32 @@
+[
+  {
+    "id": "slide-1",
+    "title": "机器学习算法分类",
+    "content": "机器学习算法分为监督学习、无监督学习和强化学习三大类。每类算法有不同的特点和适用场景。",
+    "thumbnail": "/api/files/sample-project-5/generated/slides/machine-learning-algorithms-comparison-chart.jpg"
+  },
+  {
+    "id": "slide-2",
+    "title": "监督学习算法",
+    "content": "监督学习使用有标签的数据进行训练，包括线性回归、决策树、随机森林、支持向量机等算法。",
+    "thumbnail": "/api/files/sample-project-5/generated/slides/machine-learning-workflow.png"
+  },
+  {
+    "id": "slide-3",
+    "title": "无监督学习算法",
+    "content": "无监督学习处理无标签数据，包括K-means聚类、层次聚类、PCA降维等算法。",
+    "thumbnail": "/confusion-matrix-heatmap.png"
+  },
+  {
+    "id": "slide-4",
+    "title": "算法性能评估",
+    "content": "通过准确率、召回率、F1分数、AUC等指标评估算法性能，交叉验证确保结果可靠性。",
+    "thumbnail": "/cross-validation-k-fold-diagram.jpg"
+  },
+  {
+    "id": "slide-5",
+    "title": "算法选择策略",
+    "content": "根据数据特点、问题类型、性能要求等因素选择合适的算法，没有万能的算法。",
+    "thumbnail": "/overfitting-and-underfitting-curves.jpg"
+  }
+]

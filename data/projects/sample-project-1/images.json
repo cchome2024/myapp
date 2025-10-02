@@ -1,0 +1,23 @@
+[
+  {
+    "id": "img1",
+    "url": "https://picsum.photos/400/300?random=1",
+    "title": "机器学习概览",
+    "description": "机器学习概念和应用的概览图",
+    "category": "概览"
+  },
+  {
+    "id": "img2",
+    "url": "https://picsum.photos/400/300?random=2",
+    "title": "深度学习架构",
+    "description": "深度学习和神经网络架构图",
+    "category": "架构"
+  },
+  {
+    "id": "img3",
+    "url": "https://picsum.photos/400/300?random=3",
+    "title": "数据处理流程",
+    "description": "数据预处理和特征工程流程图",
+    "category": "流程"
+  }
+]

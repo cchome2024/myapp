@@ -1,0 +1,32 @@
+[
+  {
+    "id": "slide-1",
+    "title": "深度学习概述",
+    "content": "深度学习是机器学习的一个重要分支，它模仿人脑的神经网络结构来处理数据。通过多层神经网络的组合，深度学习能够学习数据中的复杂模式和特征。",
+    "thumbnail": "/api/files/sample-project-2/generated/slides/neural-network-architecture.png"
+  },
+  {
+    "id": "slide-2",
+    "title": "神经网络基础",
+    "content": "神经网络由输入层、隐藏层和输出层组成。每个神经元接收输入信号，通过激活函数处理后输出。权重和偏置参数通过训练过程不断调整。",
+    "thumbnail": "/api/files/sample-project-2/generated/slides/neural-network-visualization-with-nodes.jpg"
+  },
+  {
+    "id": "slide-3",
+    "title": "卷积神经网络(CNN)",
+    "content": "CNN专门用于处理图像数据，通过卷积层提取局部特征，池化层降低维度，全连接层进行分类。CNN在图像识别任务中表现出色。",
+    "thumbnail": "/api/files/sample-project-2/generated/slides/deep-learning-architecture-diagram.jpg"
+  },
+  {
+    "id": "slide-4",
+    "title": "循环神经网络(RNN)",
+    "content": "RNN能够处理序列数据，通过循环连接保持历史信息。LSTM和GRU是RNN的改进版本，解决了梯度消失问题。",
+    "thumbnail": "/api/files/sample-project-2/generated/slides/machine-learning-workflow.png"
+  },
+  {
+    "id": "slide-5",
+    "title": "训练与优化",
+    "content": "深度学习模型通过反向传播算法训练，使用梯度下降优化参数。正则化技术如Dropout可以防止过拟合。",
+    "thumbnail": "/api/files/sample-project-2/generated/slides/gradient-descent-optimization-path.jpg"
+  }
+]
