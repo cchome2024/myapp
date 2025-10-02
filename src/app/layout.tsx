@@ -4,7 +4,12 @@ import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-import "./globals.css";
+
+
+import './globals.css'
+
+
+
 
 export const metadata: Metadata = {
   title: "AI Learning Assistant",
