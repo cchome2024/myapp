@@ -2,12 +2,19 @@
 import { FileManager } from "@/lib/file-manager"
 import path from "path"
 
+type FileRouteParams = {
+  projectId: string
+  type: string
+  subType: string
+  fileName: string
+}
+
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { projectId: string, type: string, subType: string, fileName: string } }
+  _request: NextRequest,
+  context: { params: Promise<FileRouteParams> }
 ) {
   try {
-    const { projectId, type, subType, fileName } = params
+    const { projectId, type, subType, fileName } = await context.params
     
     if (!projectId || !type || !subType || !fileName) {
       return new NextResponse("Missing parameters", { status: 400 })
@@ -40,8 +47,12 @@ export async function GET(
     }
     
     const mimeType = mimeTypes[ext] || 'application/octet-stream'
-    
-    return new NextResponse(fileBuffer, {
+    const fileContents = fileBuffer.buffer.slice(
+      fileBuffer.byteOffset,
+      fileBuffer.byteOffset + fileBuffer.byteLength
+    ) as ArrayBuffer
+
+    return new NextResponse(fileContents, {
       headers: {
         'Content-Type': mimeType,
         'Cache-Control': 'public, max-age=31536000', // 缓存1年

@@ -26,21 +26,24 @@ interface ProjectData {
   tags?: string[]
 }
 
+interface InputFile {
+  filename: string
+  originalName: string
+  mime: string
+  size: number
+  uploadedAt: string
+  url?: string
+}
+
 interface InputsData {
-  urls: string[]
-  prompts: {
-    summary: string
-    images: string
-    ppt: string
-    custom: string
+  urls?: string[]
+  prompts?: {
+    summary?: string
+    images?: string
+    ppt?: string
+    custom?: string
   }
-  files: Array<{
-    filename: string
-    originalName: string
-    mime: string
-    size: number
-    uploadedAt: string
-  }>
+  files?: InputFile[]
 }
 
 interface UploadSectionProps {
@@ -85,14 +88,14 @@ export function UploadSection({ selectedProject }: UploadSectionProps) {
         const inputsResult = await inputsResponse.json()
         
         if (inputsResult.success && inputsResult.data) {
-          const inputs = inputsResult.data
+          const inputs = inputsResult.data as InputsData
           
           // 反显上传的文件和URL
           const uploadedFiles: UploadedFile[] = []
           
           // 处理上传的文件
           if (inputs.files && Array.isArray(inputs.files)) {
-            inputs.files.forEach((file: any) => {
+            inputs.files.forEach((file) => {
               uploadedFiles.push({
                 name: file.originalName || file.filename,
                 size: `${(file.size / 1024).toFixed(1)} KB`,

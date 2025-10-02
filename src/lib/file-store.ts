@@ -1,6 +1,8 @@
 ﻿import { promises as fs } from "fs"
 import path from "path"
 
+import type { PublishManifest } from "./schemas"
+
 const DATA_DIR = path.join(process.cwd(), "data")
 const PROJECTS_FILE = path.join(DATA_DIR, "projects.json")
 
@@ -304,6 +306,28 @@ export class ProjectDataStore {
     const projectDir = await this.getProjectDir()
     await fs.writeFile(path.join(projectDir, "references.json"), JSON.stringify(references, null, 2), "utf-8")
   }
+
+  async getPublishManifest(platform: string): Promise<PublishManifest | null> {
+    const projectDir = await this.getProjectDir()
+    const publishDir = path.join(projectDir, "publish")
+    try {
+      const data = await fs.readFile(path.join(publishDir, `${platform}.json`), "utf-8")
+      return JSON.parse(data)
+    } catch (error) {
+      const nodeError = error as NodeJS.ErrnoException
+      if (nodeError?.code !== "ENOENT") {
+        console.error("Failed to read publish manifest:", error)
+      }
+      return null
+    }
+  }
+
+  async setPublishManifest(platform: string, manifest: PublishManifest): Promise<void> {
+    const projectDir = await this.getProjectDir()
+    const publishDir = path.join(projectDir, "publish")
+    await fs.mkdir(publishDir, { recursive: true })
+    await fs.writeFile(path.join(publishDir, `${platform}.json`), JSON.stringify(manifest, null, 2), "utf-8")
+  }
 }
 
 // 类型定义
@@ -319,17 +343,18 @@ export interface Project {
 export interface InputsData {
   urls: string[]
   prompts: {
-    summary: string
-    images: string
-    ppt: string
-    custom: string
+    summary?: string
+    images?: string
+    ppt?: string
+    custom?: string
   }
   files: Array<{
     filename: string
-    originalName: string
-    mime: string
-    size: number
-    uploadedAt: string
+    originalName?: string
+    mime?: string
+    size?: number
+    uploadedAt?: string
+    url?: string
   }>
 }
 

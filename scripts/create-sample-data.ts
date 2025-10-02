@@ -29,7 +29,7 @@ async function createSampleProject() {
   await store.setSummary(summary)
   
   // 设置测验
-  const quiz: QuizQuestion[] = [
+  const quizQuestions: QuizQuestion[] = [
     {
       id: "q1",
       question: "什么是机器学习？",
@@ -52,7 +52,7 @@ async function createSampleProject() {
       explanation: "过拟合发生在模型过于复杂并记忆训练数据时。"
     }
   ]
-  await store.setQuiz(quiz)
+  await store.setQuiz({ questions: quizQuestions })
   
   // 设置图片
   const images: ImageData[] = [

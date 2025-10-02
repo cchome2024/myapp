@@ -137,14 +137,14 @@ export function AILearningAssistant() {
           onWebSearchChange={setWebSearchEnabled}
           projectName={projectName}
           onProjectNameChange={handleProjectNameChange}
-          selectedProject={selectedProject}
+          selectedProject={selectedProject ?? undefined}
         />
 
         {/* Right Results Panel */}
         <ResultsPanel 
           currentStep={currentStep} 
           webSearchEnabled={webSearchEnabled} 
-          selectedProject={selectedProject}
+          selectedProject={selectedProject ?? undefined}
         />
       </div>
     </div>

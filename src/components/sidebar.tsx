@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 import type { Project } from "./ai-learning-assistant"
 
 interface SidebarProps {
+  projects?: Project[]
   selectedProject: string | null
   onSelectProject: (id: string, status: "draft" | "processing" | "complete" | "error") => void
   onNewProject: () => void
@@ -31,29 +32,45 @@ const statusConfig = {
   error: { icon: AlertCircle, label: "错误", color: "text-destructive", bgColor: "bg-destructive/10" },
 }
 
-export function Sidebar({ selectedProject, onSelectProject, onNewProject }: SidebarProps) {
+export function Sidebar({ projects: externalProjects, selectedProject, onSelectProject, onNewProject }: SidebarProps) {
   const [searchQuery, setSearchQuery] = useState("")
-  const [projects, setProjects] = useState<Project[]>([])
-  const [loading, setLoading] = useState(true)
+  const [projects, setProjects] = useState<Project[]>(externalProjects ?? [])
+  const [loading, setLoading] = useState(externalProjects === undefined)
 
   useEffect(() => {
+    if (externalProjects !== undefined) {
+      setProjects(externalProjects)
+      setLoading(false)
+      return
+    }
+
+    let isMounted = true
+
     const fetchProjects = async () => {
       try {
         setLoading(true)
         const response = await fetch("/api/mock/projects")
         const result = await response.json()
-        if (result.success) {
+        if (result.success && isMounted) {
           setProjects(result.data)
         }
       } catch (error) {
-        console.error("Failed to fetch projects:", error)
+        if (isMounted) {
+          console.error("Failed to fetch projects:", error)
+        }
       } finally {
-        setLoading(false)
+        if (isMounted) {
+          setLoading(false)
+        }
       }
     }
 
     fetchProjects()
-  }, [])
+
+    return () => {
+      isMounted = false
+    }
+  }, [externalProjects])
 
   const filteredProjects = projects.filter((project) => project.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
