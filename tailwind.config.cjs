@@ -1,11 +1,6 @@
-﻿import type { Config } from 'tailwindcss';
-
-export default {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+﻿/** @type {import('tailwindcss').Config} */
+const config = {
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   darkMode: ['class'],
   theme: {
     extend: {
@@ -53,7 +48,7 @@ export default {
   },
   plugins: [],
   safelist: [
-    // 防止动态类名被裁剪
+    // ?????????
     { pattern: /^(bg|text|border)-(primary|secondary|destructive|muted|accent|popover|card|foreground|background)/ },
     { pattern: /^(bg|text|border)-(primary|secondary|destructive|muted|accent|popover|card|foreground|background)-foreground/ },
     { pattern: /^(w|h)-(1|2|3|4|5|6|8|10|12|16|20|24|32|40|48|56|64|72|80|96)/ },
@@ -62,4 +57,6 @@ export default {
     { pattern: /^(justify|items|content)-(start|end|center|between|around|evenly)/ },
     { pattern: /^(space)-(x|y)-(0|1|2|3|4|5|6|8|10|12|16|20|24|32|40|48|56|64|72|80|96)/ },
   ],
-} satisfies Config;
+};
+
+module.exports = config;
