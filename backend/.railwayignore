@@ -1,0 +1,29 @@
+# 忽略前端相关文件
+../src/
+../public/
+../.next/
+../node_modules/
+../package.json
+../package-lock.json
+../pnpm-lock.yaml
+../next.config.js
+../tailwind.config.ts
+../postcss.config.js
+../tsconfig.json
+../.env.local
+../.env.example
+
+# 忽略根目录文件
+../README.md
+../vercel.json
+../.gitignore
+
+# 保留后端相关文件
+!app/
+!requirements.txt
+!Dockerfile
+!railway.json
+!railway.toml
+!Procfile
+!env.example
+!data/

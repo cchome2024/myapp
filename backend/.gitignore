@@ -53,14 +53,6 @@ logs/
 *.tmp
 *.temp
 
-# Git
-.git/
-.gitignore
-
-# Documentation
-*.md
-docs/
-
 # Test files
 tests/
 test_*.py
@@ -111,3 +103,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Data files (keep structure but ignore large files)
+data/projects/*/uploads/
+data/projects/*/temp/
+data/projects/*/generated/
