@@ -1,7 +1,8 @@
 ﻿"use client"
 
 import { useState, useEffect } from "react"
-import { Edit2, Check, X, Sparkles } from "lucide-react"
+import { Edit2, Check, X, Sparkles, Save } from "lucide-react"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { UploadSection } from "./upload-section"
 import { OptionsSection } from "./options-section"
 import { ProgressSection } from "./progress-section"
@@ -18,6 +19,7 @@ interface WorkspaceProps {
   projectName: string
   onProjectNameChange: (name: string) => void
   selectedProject?: string
+  onSaveProject?: () => void
 }
 
 export function Workspace({
@@ -28,6 +30,7 @@ export function Workspace({
   projectName,
   onProjectNameChange,
   selectedProject,
+  onSaveProject,
 }: WorkspaceProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editedName, setEditedName] = useState(projectName)
@@ -103,7 +106,35 @@ export function Workspace({
               ) : (
                 <>
                   <h1 className="flex-1 text-lg font-semibold text-foreground">{projectName || "未命名项目"}</h1>
-                  <Button size="icon" variant="ghost" onClick={handleStartEdit}>
+                  {onSaveProject && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button 
+                          size="icon" 
+                          variant="ghost" 
+                          title="保存项目"
+                        >
+                          <Save className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>确认保存项目</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            确定要保存项目 "{projectName || "未命名项目"}" 吗？
+                            保存后，项目的名称、状态和修改时间将被更新。
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>取消</AlertDialogCancel>
+                          <AlertDialogAction onClick={onSaveProject}>
+                            确认保存
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
+                  <Button size="icon" variant="ghost" onClick={handleStartEdit} title="编辑项目名称">
                     <Edit2 className="h-4 w-4" />
                   </Button>
                 </>
