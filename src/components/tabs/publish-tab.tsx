@@ -34,10 +34,7 @@ interface PublishTabProps {
   projectId?: string
 }
 
-interface SummaryData {
-  text: string
-  html: string
-}
+import type { SummaryData } from "@/lib/backend"
 
 interface ImageData {
   id: string

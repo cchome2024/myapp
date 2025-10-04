@@ -1,0 +1,10 @@
+{
+  "id": "demo",
+  "name": "演示项目",
+  "date": "2025-01-04",
+  "status": "complete",
+  "createdAt": "2025-01-04T09:00:00.000Z",
+  "updatedAt": "2025-01-04T09:00:00.000Z",
+  "description": "这是一个演示项目，用于测试后端功能",
+  "tags": ["demo", "test"]
+}

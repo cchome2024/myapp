@@ -14,10 +14,7 @@ interface SummaryTabProps {
   projectId?: string
 }
 
-interface SummaryData {
-  text: string
-  html: string
-}
+import type { SummaryData } from "@/lib/backend"
 
 interface ProjectData {
   id: string

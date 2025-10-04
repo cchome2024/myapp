@@ -21,6 +21,7 @@ export interface ProjectStatus {
 
 export interface SummaryData {
   text: string
+  html: string
 }
 
 export interface QuizData {
@@ -93,10 +94,15 @@ export async function getSummary(id: string): Promise<SummaryData> {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     
-    return await response.json()
+    const data = await response.json()
+    // 确保返回的数据包含 html 字段
+    return {
+      text: data.text || "",
+      html: data.html || data.text || ""
+    }
   } catch (error) {
     console.error('Failed to get summary:', error)
-    return { text: "" }
+    return { text: "", html: "" }
   }
 }
 
