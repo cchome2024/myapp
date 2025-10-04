@@ -17,8 +17,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 复制应用代码
 COPY app ./app
 
-# 创建数据目录
-RUN mkdir -p /app/data
+# 复制数据文件
+COPY data ./data
 
 # 设置环境变量
 ENV PORT=8000

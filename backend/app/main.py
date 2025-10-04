@@ -69,6 +69,10 @@ def get_projects():
         print(f"DEBUG: File exists: {projects_file.exists()}")
         print(f"DEBUG: DATA_ROOT: {os.getenv('DATA_ROOT', 'data')}")
         print(f"DEBUG: ROOT path: {ROOT}")
+        print(f"DEBUG: Current working directory: {os.getcwd()}")
+        print(f"DEBUG: Absolute path of projects.json: {projects_file.absolute()}")
+        print(f"DEBUG: Parent directory contents: {list(ROOT.parent.iterdir()) if ROOT.parent.exists() else 'Parent does not exist'}")
+        print(f"DEBUG: ROOT directory contents: {list(ROOT.iterdir()) if ROOT.exists() else 'ROOT does not exist'}")
         
         if not projects_file.exists():
             return {"success": True, "data": [], "debug": f"projects.json not found at {projects_file}"}
