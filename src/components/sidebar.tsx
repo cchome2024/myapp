@@ -48,8 +48,8 @@ export function Sidebar({ projects: externalProjects, selectedProject, onSelectP
     const fetchProjects = async () => {
       try {
         setLoading(true)
-        const response = await fetch("/api/mock/projects")
-        const result = await response.json()
+        const { getProjects } = await import("@/lib/backend")
+        const result = await getProjects()
         if (result.success && isMounted) {
           setProjects(result.data)
         }

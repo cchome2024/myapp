@@ -35,17 +35,10 @@ export function PPTTab({ currentStep, projectId }: PPTTabProps) {
       try {
         setLoading(true)
         console.log("PPTTab: Fetching slides for projectId:", projectId)
-        const response = await fetch(`/api/mock/ppt?projectId=${projectId}`)
-        console.log("PPTTab: Response status:", response.status)
-        const result = await response.json()
-        console.log("PPTTab: Response result:", result)
-        
-        if (result.success) {
-          console.log("PPTTab: Setting slides:", result.data)
-          setSlides(result.data)
-        } else {
-          console.error("PPTTab: API returned error:", result.error)
-        }
+        const { getSlides } = await import("@/lib/backend")
+        const slidesData = await getSlides(projectId)
+        console.log("PPTTab: Setting slides:", slidesData)
+        setSlides(slidesData.slides || [])
       } catch (error) {
         console.error("PPTTab: Failed to fetch slides:", error)
       } finally {

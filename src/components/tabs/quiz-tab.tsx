@@ -40,13 +40,9 @@ export function QuizTab({ currentStep, projectId }: QuizTabProps) {
     const fetchQuiz = async () => {
       try {
         setLoading(true)
-        const response = await fetch(`/api/mock/quiz?projectId=${projectId}`)
-        const result = await response.json()
-        if (result.success) {
-          setQuizData(result.data)
-        } else {
-          console.error("QuizTab: API returned error:", result.error)
-        }
+        const { getQuiz } = await import("@/lib/backend")
+        const quizData = await getQuiz(projectId)
+        setQuizData(quizData)
       } catch (error) {
         console.error("Failed to fetch quiz:", error)
       } finally {

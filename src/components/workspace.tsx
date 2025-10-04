@@ -148,6 +148,7 @@ export function Workspace({
             onWebSearchChange={onWebSearchChange}
             currentStep={currentStep}
             onStepChange={onStepChange}
+            selectedProject={selectedProject}
           />
           <StreamingFeedback isActive={currentStep !== "idle" && currentStep !== "complete"} />
           <ProgressSection currentStep={currentStep} />

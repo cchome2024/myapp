@@ -34,15 +34,14 @@ export function ImagesTab({ currentStep, projectId }: ImagesTabProps) {
     const fetchImages = async () => {
       try {
         setLoading(true)
-        const response = await fetch(`/api/mock/images?projectId=${projectId}`)
-        const result = await response.json()
-        if (result.success) {
-          setImages(result.data)
-        } else {
-          console.error("ImagesTab: API returned error:", result.error)
-        }
+        console.log("ImagesTab: Fetching images for projectId:", projectId)
+        const { getImages } = await import("@/lib/backend")
+        const imagesData = await getImages(projectId)
+        console.log("ImagesTab: Received images data:", imagesData)
+        setImages(imagesData.items || [])
+        console.log("ImagesTab: Set images count:", imagesData.items?.length || 0)
       } catch (error) {
-        console.error("Failed to fetch images:", error)
+        console.error("ImagesTab: Failed to fetch images:", error)
       } finally {
         setLoading(false)
       }

@@ -47,18 +47,17 @@ export function SummaryTab({ currentStep, projectId }: SummaryTabProps) {
       try {
         setLoading(true)
         // Fetch project data
-        const projectResponse = await fetch(`/api/mock/projects?projectId=${projectId}`)
-        const projectResult = await projectResponse.json()
-        if (projectResult.success && projectResult.data) {
-          setProjectData(projectResult.data)
+        const { getProjects } = await import("@/lib/backend")
+        const projectsResult = await getProjects()
+        const project = projectsResult.data?.find((p: any) => p.id === projectId)
+        if (project) {
+          setProjectData(project)
         }
 
         // Fetch summary data
-        const summaryResponse = await fetch(`/api/mock/summary?projectId=${projectId}`)
-        const summaryResult = await summaryResponse.json()
-        if (summaryResult.success) {
-          setSummaryData(summaryResult.data)
-        }
+        const { getSummary } = await import("@/lib/backend")
+        const summaryData = await getSummary(projectId)
+        setSummaryData(summaryData)
       } catch (error) {
         console.error("Failed to fetch summary or project data:", error)
       } finally {

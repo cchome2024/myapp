@@ -129,25 +129,22 @@ export function PublishTab({ currentStep, projectId }: PublishTabProps) {
         setLoading(true)
         
         // 获取项目数据
-        const projectResponse = await fetch(`/api/mock/projects?projectId=${projectId}`)
-        const projectResult = await projectResponse.json()
-        if (projectResult.success && projectResult.data) {
-          setProjectData(projectResult.data)
+        const { getProjects } = await import("@/lib/backend")
+        const projectsResult = await getProjects()
+        const project = projectsResult.data?.find((p: any) => p.id === projectId)
+        if (project) {
+          setProjectData(project)
         }
 
         // 获取摘要数据
-        const summaryResponse = await fetch(`/api/mock/summary?projectId=${projectId}`)
-        const summaryResult = await summaryResponse.json()
-        if (summaryResult.success) {
-          setSummaryData(summaryResult.data)
-        }
+        const { getSummary } = await import("@/lib/backend")
+        const summaryData = await getSummary(projectId)
+        setSummaryData(summaryData)
 
         // 获取图片数据
-        const imagesResponse = await fetch(`/api/mock/images?projectId=${projectId}`)
-        const imagesResult = await imagesResponse.json()
-        if (imagesResult.success) {
-          setProjectImages(imagesResult.data)
-        }
+        const { getImages } = await import("@/lib/backend")
+        const imagesData = await getImages(projectId)
+        setProjectImages(imagesData.items || [])
       } catch (error) {
         console.error("Failed to fetch data:", error)
       } finally {

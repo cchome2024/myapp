@@ -42,8 +42,9 @@ export class FileManager {
     
     await fs.writeFile(filePath, file)
     
-    // 返回相对于public的URL路径
-    return `/api/files/${this.projectId}/uploads/${fileType}/${fileName}`
+    // 返回后端API路径
+    const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000'
+    return `${API_BASE}/projects/${this.projectId}/files/uploads/${fileType}/${fileName}`
   }
 
   // 保存AI生成的文件
@@ -53,8 +54,9 @@ export class FileManager {
     
     await fs.writeFile(filePath, file)
     
-    // 返回相对于public的URL路径
-    return `/api/files/${this.projectId}/generated/${type}/${fileName}`
+    // 返回后端API路径
+    const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000'
+    return `${API_BASE}/projects/${this.projectId}/files/generated/${type}/${fileName}`
   }
 
   // 保存临时文件
@@ -65,7 +67,8 @@ export class FileManager {
     
     await fs.writeFile(filePath, file)
     
-    return `/api/files/${this.projectId}/temp/${fileName}`
+    const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000'
+    return `${API_BASE}/projects/${this.projectId}/files/temp/${fileName}`
   }
 
   // 读取文件

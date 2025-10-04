@@ -1,13 +1,15 @@
 ﻿"use client"
 
-import { useState } from "react"
-import { ChevronDown, Sparkles } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { ChevronDown, Sparkles, RotateCcw } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { useToast } from "@/hooks/use-toast"
+import { startProject, getStatus } from "@/lib/backend"
 import type { ProcessingStep } from "./ai-learning-assistant"
 
 interface OptionsSectionProps {
@@ -15,6 +17,7 @@ interface OptionsSectionProps {
   onWebSearchChange: (enabled: boolean) => void
   currentStep: ProcessingStep
   onStepChange: (step: ProcessingStep) => void
+  selectedProject?: string
 }
 
 export function OptionsSection({
@@ -22,6 +25,7 @@ export function OptionsSection({
   onWebSearchChange,
   currentStep,
   onStepChange,
+  selectedProject,
 }: OptionsSectionProps) {
   const [advancedOpen, setAdvancedOpen] = useState(false)
   const [generatePPT, setGeneratePPT] = useState(true)
@@ -30,37 +34,216 @@ export function OptionsSection({
   const [language, setLanguage] = useState("zh")
   const [summaryLevel, setSummaryLevel] = useState("both")
   const [quizCount, setQuizCount] = useState(10)
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [progress, setProgress] = useState(0)
+  const pollingRef = useRef<NodeJS.Timeout | null>(null)
+  const { toast } = useToast()
 
-  const handleStartGeneration = () => {
-    // 开始生成，模拟完整的进度流程
-    onStepChange("parsing")
-    setTimeout(() => onStepChange("indexing"), 2000)
-    setTimeout(() => onStepChange("summary"), 4000)
-    setTimeout(() => onStepChange("quiz"), 6000)
-    setTimeout(() => onStepChange("images"), 8000)
-    setTimeout(() => onStepChange("ppt"), 10000)
-    setTimeout(() => onStepChange("complete"), 12000)
+  // 清理轮询
+  const stopPolling = () => {
+    if (pollingRef.current) {
+      clearInterval(pollingRef.current)
+      pollingRef.current = null
+    }
   }
 
-  const handleSummaryOnly = () => {
-    // 仅生成摘要
-    onStepChange("parsing")
-    setTimeout(() => onStepChange("indexing"), 1500)
-    setTimeout(() => onStepChange("summary"), 3000)
-    setTimeout(() => onStepChange("complete"), 4500)
+  // 开始轮询状态
+  const startPolling = async (projectId: string) => {
+    const pollStatus = async () => {
+      try {
+        const status = await getStatus(projectId)
+        console.log('Polling status:', status)
+        
+        // 更新进度
+        setProgress(status.percent)
+        onStepChange(status.step as ProcessingStep)
+        
+        if (status.status === 'complete') {
+          setIsProcessing(false)
+          stopPolling()
+          toast({
+            title: "生成完成",
+            description: "项目生成成功完成",
+          })
+        } else if (status.status === 'error') {
+          setIsProcessing(false)
+          setError(status.lastError || '生成过程中发生错误')
+          stopPolling()
+          toast({
+            title: "生成失败",
+            description: status.lastError || '生成过程中发生错误',
+            variant: "destructive",
+          })
+        }
+      } catch (error) {
+        console.error('Polling error:', error)
+        setIsProcessing(false)
+        setError('获取状态失败')
+        stopPolling()
+        toast({
+          title: "状态检查失败",
+          description: "无法获取项目状态",
+          variant: "destructive",
+        })
+      }
+    }
+
+    // 立即执行一次
+    await pollStatus()
+    
+    // 开始轮询
+    pollingRef.current = setInterval(pollStatus, 1200)
   }
 
-  const handleQuizOnly = () => {
-    // 仅生成Quiz
-    onStepChange("parsing")
-    setTimeout(() => onStepChange("indexing"), 1500)
-    setTimeout(() => onStepChange("summary"), 3000)
-    setTimeout(() => onStepChange("quiz"), 4500)
-    setTimeout(() => onStepChange("complete"), 6000)
+  const handleStartGeneration = async () => {
+    if (!selectedProject) {
+      toast({
+        title: "请先选择项目",
+        description: "请先选择一个项目再开始生成",
+        variant: "destructive",
+      })
+      return
+    }
+
+    try {
+      setIsProcessing(true)
+      setError(null)
+      setProgress(0)
+      
+      const config = {
+        webSearchEnabled,
+        generatePPT,
+        autoImages,
+        imageStyle: imageStyle as "academic" | "flat" | "realistic" | "wireframe",
+        language: language as "zh" | "en",
+        summaryLevel: summaryLevel as "chapter" | "global" | "both",
+        quizCount
+      }
+
+      console.log('Starting project with config:', config)
+      await startProject(selectedProject, config)
+      
+      // 开始轮询状态
+      await startPolling(selectedProject)
+      
+      toast({
+        title: "开始生成",
+        description: "项目生成已开始，请稍候...",
+      })
+    } catch (error) {
+      console.error('Start generation error:', error)
+      setIsProcessing(false)
+      setError('启动生成失败')
+      toast({
+        title: "启动失败",
+        description: "无法启动项目生成",
+        variant: "destructive",
+      })
+    }
   }
 
-  const isProcessing = currentStep !== "idle" && currentStep !== "complete"
-  const canStart = currentStep === "idle"
+  const handleSummaryOnly = async () => {
+    if (!selectedProject) {
+      toast({
+        title: "请先选择项目",
+        description: "请先选择一个项目再开始生成",
+        variant: "destructive",
+      })
+      return
+    }
+
+    try {
+      setIsProcessing(true)
+      setError(null)
+      setProgress(0)
+      
+      const config = {
+        webSearchEnabled,
+        generatePPT: false,
+        autoImages: false,
+        imageStyle: imageStyle as "academic" | "flat" | "realistic" | "wireframe",
+        language: language as "zh" | "en",
+        summaryLevel: summaryLevel as "chapter" | "global" | "both",
+        quizCount: 0
+      }
+
+      await startProject(selectedProject, config)
+      await startPolling(selectedProject)
+      
+      toast({
+        title: "开始生成摘要",
+        description: "摘要生成已开始，请稍候...",
+      })
+    } catch (error) {
+      console.error('Start summary error:', error)
+      setIsProcessing(false)
+      setError('启动摘要生成失败')
+      toast({
+        title: "启动失败",
+        description: "无法启动摘要生成",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleQuizOnly = async () => {
+    if (!selectedProject) {
+      toast({
+        title: "请先选择项目",
+        description: "请先选择一个项目再开始生成",
+        variant: "destructive",
+      })
+      return
+    }
+
+    try {
+      setIsProcessing(true)
+      setError(null)
+      setProgress(0)
+      
+      const config = {
+        webSearchEnabled,
+        generatePPT: false,
+        autoImages: false,
+        imageStyle: imageStyle as "academic" | "flat" | "realistic" | "wireframe",
+        language: language as "zh" | "en",
+        summaryLevel: summaryLevel as "chapter" | "global" | "both",
+        quizCount
+      }
+
+      await startProject(selectedProject, config)
+      await startPolling(selectedProject)
+      
+      toast({
+        title: "开始生成Quiz",
+        description: "Quiz生成已开始，请稍候...",
+      })
+    } catch (error) {
+      console.error('Start quiz error:', error)
+      setIsProcessing(false)
+      setError('启动Quiz生成失败')
+      toast({
+        title: "启动失败",
+        description: "无法启动Quiz生成",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleRetry = () => {
+    setError(null)
+    handleStartGeneration()
+  }
+
+  // 清理轮询
+  useEffect(() => {
+    return () => {
+      stopPolling()
+    }
+  }, [])
+
+  const canStart = !isProcessing && selectedProject
 
   return (
     <Card className="shadow-sm">
@@ -177,6 +360,43 @@ export function OptionsSection({
             </div>
           </CollapsibleContent>
         </Collapsible>
+
+        {/* 错误显示 */}
+        {error && (
+          <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-red-800">生成失败</p>
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleRetry}
+                className="border-red-300 text-red-700 hover:bg-red-100"
+              >
+                <RotateCcw className="mr-2 h-3 w-3" />
+                重试
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* 进度显示 */}
+        {isProcessing && (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span>生成进度</span>
+              <span>{progress}%</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button 

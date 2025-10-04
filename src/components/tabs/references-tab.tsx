@@ -22,11 +22,8 @@ export function ReferencesTab() {
     const fetchReferences = async () => {
       try {
         setLoading(true)
-        const response = await fetch("/api/mock/references")
-        const result = await response.json()
-        if (result.success) {
-          setReferences(result.data)
-        }
+        // 暂时返回空数据，因为后端还没有实现 references 接口
+        setReferences([])
       } catch (error) {
         console.error("Failed to fetch references:", error)
       } finally {

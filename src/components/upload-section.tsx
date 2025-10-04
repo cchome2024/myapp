@@ -75,17 +75,16 @@ export function UploadSection({ selectedProject }: UploadSectionProps) {
         setLoading(true)
         
         // 获取项目基本信息
-        const projectResponse = await fetch(`/api/mock/projects?projectId=${selectedProject}`)
-        const projectResult = await projectResponse.json()
+        const { getProjects } = await import("@/lib/backend")
+        const projectsResult = await getProjects()
+        const project = projectsResult.data?.find((p: any) => p.id === selectedProject)
         
-        if (projectResult.success && projectResult.data && projectResult.data.length > 0) {
-          const project = projectResult.data[0]
+        if (project) {
           setProjectData(project)
         }
         
-        // 获取用户输入数据
-        const inputsResponse = await fetch(`/api/mock/inputs?projectId=${selectedProject}`)
-        const inputsResult = await inputsResponse.json()
+        // 获取用户输入数据 - 暂时返回空数据
+        const inputsResult = { success: true, data: null }
         
         if (inputsResult.success && inputsResult.data) {
           const inputs = inputsResult.data as InputsData
@@ -159,7 +158,8 @@ export function UploadSection({ selectedProject }: UploadSectionProps) {
         formData.append('projectId', selectedProject)
         formData.append('file', file)
         
-        const response = await fetch('/api/upload', {
+        const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000'
+        const response = await fetch(`${API_BASE}/projects/${selectedProject}/upload`, {
           method: 'POST',
           body: formData
         })

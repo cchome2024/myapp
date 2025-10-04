@@ -31,8 +31,8 @@ export function AILearningAssistant() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("/api/mock/projects")
-        const result = await response.json()
+        const { getProjects } = await import("@/lib/backend")
+        const result = await getProjects()
         if (result.success) {
           setProjects(result.data)
         }
@@ -68,23 +68,20 @@ export function AILearningAssistant() {
     
     // 立即保存新项目到文件系统
     try {
-      const response = await fetch(`/api/projects/${newProject.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: newProject.name,
-          status: newProject.status,
-          lastModified: new Date().toISOString(),
-        })
+      const { updateProject } = await import("@/lib/backend")
+      const response = await updateProject(newProject.id, {
+        name: newProject.name,
+        status: newProject.status,
+        lastModified: new Date().toISOString(),
       })
 
-      if (response.ok) {
+      if (response.success) {
         // 更新本地状态
         setProjects((prev) => [newProject, ...prev])
         setSelectedProject(newProject.id)
         setProjectName(newProject.name)
         setCurrentStep("idle")
-        
+
         toast({
           title: "新项目创建成功",
           description: `项目 "${newProject.name}" 已创建`,
@@ -131,17 +128,14 @@ export function AILearningAssistant() {
 
     try {
       // 调用保存API
-      const response = await fetch(`/api/projects/${selectedProject}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: projectName,
-          status: currentStep === "complete" ? "complete" : "draft",
-          lastModified: new Date().toISOString(),
-        })
+      const { updateProject } = await import("@/lib/backend")
+      const response = await updateProject(selectedProject, {
+        name: projectName,
+        status: currentStep === "complete" ? "complete" : "draft",
+        lastModified: new Date().toISOString(),
       })
 
-      if (!response.ok) {
+      if (!response.success) {
         throw new Error('保存失败')
       }
 
