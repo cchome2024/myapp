@@ -10,6 +10,45 @@ from pathlib import Path
 
 app = FastAPI(title="V0 Backend")
 
+# 启动时打印目录结构
+def print_directory_structure(path, prefix="", max_depth=3, current_depth=0):
+    """递归打印目录结构"""
+    if current_depth >= max_depth:
+        return
+    
+    try:
+        if not os.path.exists(path):
+            print(f"{prefix}[NOT EXISTS] {path}")
+            return
+            
+        if os.path.isfile(path):
+            print(f"{prefix}[FILE] {os.path.basename(path)}")
+            return
+            
+        print(f"{prefix}[DIR] {os.path.basename(path)}/")
+        items = sorted(os.listdir(path))
+        for i, item in enumerate(items):
+            is_last = i == len(items) - 1
+            new_prefix = prefix + ("└── " if is_last else "├── ")
+            next_prefix = prefix + ("    " if is_last else "│   ")
+            item_path = os.path.join(path, item)
+            print_directory_structure(item_path, next_prefix, max_depth, current_depth + 1)
+    except PermissionError:
+        print(f"{prefix}[PERMISSION DENIED] {os.path.basename(path)}")
+    except Exception as e:
+        print(f"{prefix}[ERROR] {os.path.basename(path)}: {e}")
+
+# 启动时打印目录结构
+print("=" * 60)
+print("STARTUP: Directory structure from root")
+print("=" * 60)
+print_directory_structure("/app", max_depth=4)
+print("=" * 60)
+print(f"Current working directory: {os.getcwd()}")
+print(f"DATA_ROOT environment variable: {os.getenv('DATA_ROOT', 'data')}")
+print(f"ROOT path: {ROOT}")
+print("=" * 60)
+
 # 获取允许的源域名
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 
