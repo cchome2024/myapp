@@ -2,7 +2,7 @@ from fastapi import FastAPI, BackgroundTasks, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from .models import GenerationConfig, State
-from .storage import write_json, read_json, project_dir, state_path, config_path, pjoin
+from .storage import write_json, read_json, project_dir, state_path, config_path, pjoin, ROOT
 from .pipeline import run_pipeline
 import json
 import os
@@ -65,23 +65,35 @@ def get_projects():
     """Get all projects list"""
     try:
         projects_file = pjoin("projects.json")
+        print(f"DEBUG: Looking for projects.json at: {projects_file}")
+        print(f"DEBUG: File exists: {projects_file.exists()}")
+        print(f"DEBUG: DATA_ROOT: {os.getenv('DATA_ROOT', 'data')}")
+        print(f"DEBUG: ROOT path: {ROOT}")
+        
         if not projects_file.exists():
-            return {"success": True, "data": []}
+            return {"success": True, "data": [], "debug": f"projects.json not found at {projects_file}"}
         
         with projects_file.open("r", encoding="utf-8") as f:
             project_ids = json.load(f)
+        
+        print(f"DEBUG: Found {len(project_ids)} project IDs")
         
         projects = []
         for item in project_ids:
             project_id = item["id"]
             meta_file = project_dir(project_id) / "meta.json"
+            print(f"DEBUG: Checking meta.json for {project_id} at: {meta_file}")
             if meta_file.exists():
                 with meta_file.open("r", encoding="utf-8") as f:
                     meta = json.load(f)
                     projects.append(meta)
+                    print(f"DEBUG: Added project {project_id}")
+            else:
+                print(f"DEBUG: meta.json not found for {project_id}")
         
-        return {"success": True, "data": projects}
+        return {"success": True, "data": projects, "debug": f"Found {len(projects)} projects"}
     except Exception as e:
+        print(f"DEBUG: Exception in get_projects: {str(e)}")
         return {"success": False, "error": str(e)}
 
 @app.put("/api/projects/{project_id}")

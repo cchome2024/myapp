@@ -34,3 +34,6 @@ def state_path(project_id: str) -> Path:
 
 def config_path(project_id: str) -> Path:
     return project_dir(project_id) / "config.json"
+
+# 导出 ROOT 供调试使用
+__all__ = ['pjoin', 'read_json', 'write_json', 'project_dir', 'state_path', 'config_path', 'ROOT']
