@@ -1,0 +1,9 @@
+{
+  "webSearchEnabled": false,
+  "generatePPT": true,
+  "autoImages": true,
+  "imageStyle": "flat",
+  "language": "zh",
+  "summaryLevel": "global",
+  "quizCount": 10
+}

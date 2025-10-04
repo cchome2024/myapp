@@ -1,0 +1,44 @@
+{
+  "step": "complete",
+  "percent": 100,
+  "status": "complete",
+  "lastError": null,
+  "lock": null,
+  "history": [
+    {
+      "step": "parsing",
+      "ok": true,
+      "at": 1759568820
+    },
+    {
+      "step": "indexing",
+      "ok": true,
+      "at": 1759568821
+    },
+    {
+      "step": "summary",
+      "ok": true,
+      "at": 1759568822
+    },
+    {
+      "step": "quiz",
+      "ok": true,
+      "at": 1759568823
+    },
+    {
+      "step": "images",
+      "ok": true,
+      "at": 1759568824
+    },
+    {
+      "step": "ppt",
+      "ok": true,
+      "at": 1759568825
+    },
+    {
+      "step": "publish",
+      "ok": true,
+      "at": 1759568826
+    }
+  ]
+}

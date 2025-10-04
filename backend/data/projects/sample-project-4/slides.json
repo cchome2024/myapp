@@ -1,0 +1,32 @@
+[
+  {
+    "id": "slide-1",
+    "title": "计算机视觉概述",
+    "content": "计算机视觉是人工智能的重要应用领域，致力于让计算机像人类一样理解和分析视觉信息。包括图像处理、目标检测、图像分类等任务。",
+    "thumbnail": "/projects/sample-project-4/files/generated/slides/decision-tree-structure.jpg"
+  },
+  {
+    "id": "slide-2",
+    "title": "图像预处理",
+    "content": "图像预处理包括去噪、增强、归一化等操作，为后续的特征提取和模型训练做准备。OpenCV是常用的图像处理库。",
+    "thumbnail": "/projects/sample-project-4/files/generated/slides/decision-tree-structure.jpg"
+  },
+  {
+    "id": "slide-3",
+    "title": "特征提取",
+    "content": "传统方法使用SIFT、HOG等手工特征，深度学习方法使用CNN自动学习特征表示，效果更好。",
+    "thumbnail": "/projects/sample-project-4/files/generated/slides/decision-tree-structure.jpg"
+  },
+  {
+    "id": "slide-4",
+    "title": "目标检测",
+    "content": "目标检测不仅要识别图像中的物体类别，还要定位其位置。R-CNN、YOLO、SSD等是经典的目标检测算法。",
+    "thumbnail": "/projects/sample-project-4/files/generated/slides/decision-tree-structure.jpg"
+  },
+  {
+    "id": "slide-5",
+    "title": "图像分割",
+    "content": "图像分割将图像分割成不同的区域或对象。语义分割区分类别，实例分割区分个体。",
+    "thumbnail": "/projects/sample-project-4/files/generated/slides/decision-tree-structure.jpg"
+  }
+]
