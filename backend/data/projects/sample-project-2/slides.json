@@ -1,3 +1,34 @@
 {
-  "slides": []
+  "slides": [
+    {
+      "id": "slide-1",
+      "title": "深度学习概述",
+      "content": "深度学习是机器学习的一个重要分支，它模仿人脑的神经网络结构来处理数据。通过多层神经网络的组合，深度学习能够学习数据中的复杂模式和特征。",
+      "thumbnail": "/projects/sample-project-2/files/generated/slides/neural-network-architecture.png"
+    },
+    {
+      "id": "slide-2",
+      "title": "神经网络基础",
+      "content": "神经网络由多个相互连接的节点（神经元）组成，每个节点接收输入信号，经过激活函数处理后输出结果。网络通过调整权重和偏置来学习数据中的模式。",
+      "thumbnail": "/projects/sample-project-2/files/generated/slides/neural-network-visualization-with-nodes.jpg"
+    },
+    {
+      "id": "slide-3",
+      "title": "卷积神经网络",
+      "content": "CNN是专门用于处理图像数据的深度学习架构，通过卷积层、池化层和全连接层的组合，能够有效提取图像特征并进行分类识别。",
+      "thumbnail": "/projects/sample-project-2/files/generated/slides/deep-learning-architecture-diagram.jpg"
+    },
+    {
+      "id": "slide-4",
+      "title": "训练过程",
+      "content": "深度学习模型的训练包括前向传播和反向传播两个阶段。前向传播计算预测结果，反向传播计算梯度并更新模型参数。",
+      "thumbnail": "/projects/sample-project-2/files/generated/slides/machine-learning-workflow.png"
+    },
+    {
+      "id": "slide-5",
+      "title": "优化算法",
+      "content": "梯度下降是最基础的优化算法，通过迭代更新参数来最小化损失函数。Adam、RMSprop等自适应优化算法能够更高效地训练深度网络。",
+      "thumbnail": "/projects/sample-project-2/files/generated/slides/gradient-descent-optimization-path.jpg"
+    }
+  ]
 }

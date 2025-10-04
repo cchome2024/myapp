@@ -5,13 +5,17 @@ from .models import GenerationConfig, State
 from .storage import write_json, read_json, project_dir, state_path, config_path, pjoin
 from .pipeline import run_pipeline
 import json
+import os
 from pathlib import Path
 
 app = FastAPI(title="V0 Backend")
 
+# 获取允许的源域名
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 上线后改为你的前端域名
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

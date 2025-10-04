@@ -1,3 +1,60 @@
 {
-  "items": []
+  "items": [
+    {
+      "id": "img-1",
+      "url": "/projects/sample-project-2/files/generated/images/deep-learning-overview.png",
+      "title": "深度学习概述",
+      "description": "深度学习是机器学习的一个重要分支，通过多层神经网络模拟人脑的学习过程",
+      "category": "overview"
+    },
+    {
+      "id": "img-2",
+      "url": "/projects/sample-project-2/files/generated/images/neural-network-structure.jpg",
+      "title": "神经网络结构",
+      "description": "展示了多层神经网络的基本结构，包括输入层、隐藏层和输出层",
+      "category": "architecture"
+    },
+    {
+      "id": "img-3",
+      "url": "/projects/sample-project-2/files/generated/images/cnn-architecture.jpg",
+      "title": "卷积神经网络架构",
+      "description": "CNN是深度学习中用于图像处理的重要网络架构",
+      "category": "architecture"
+    },
+    {
+      "id": "img-4",
+      "url": "/projects/sample-project-2/files/generated/images/backpropagation.png",
+      "title": "反向传播算法",
+      "description": "反向传播是训练神经网络的核心算法，用于计算梯度并更新权重",
+      "category": "algorithm"
+    },
+    {
+      "id": "img-5",
+      "url": "/projects/sample-project-2/files/generated/images/training-process.png",
+      "title": "训练过程",
+      "description": "展示了深度学习模型的训练过程，包括前向传播和反向传播",
+      "category": "process"
+    },
+    {
+      "id": "img-6",
+      "url": "/projects/sample-project-2/files/generated/images/optimization-algorithm.jpg",
+      "title": "优化算法",
+      "description": "各种优化算法如梯度下降、Adam等在深度学习中的应用",
+      "category": "algorithm"
+    },
+    {
+      "id": "img-7",
+      "url": "/projects/sample-project-2/files/generated/images/algorithm-comparison.jpg",
+      "title": "算法比较",
+      "description": "不同深度学习算法的性能比较和适用场景",
+      "category": "comparison"
+    },
+    {
+      "id": "img-8",
+      "url": "/projects/sample-project-2/files/generated/images/model-performance.jpg",
+      "title": "模型性能",
+      "description": "深度学习模型在不同任务上的性能表现和评估指标",
+      "category": "evaluation"
+    }
+  ]
 }

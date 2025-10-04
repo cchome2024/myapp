@@ -1,8 +1,11 @@
 import json
+import os
 from pathlib import Path
 from typing import Any, Optional
 
-ROOT = (Path(__file__).resolve().parents[1] / "data").resolve()
+# 使用环境变量或默认路径
+DATA_ROOT = os.getenv("DATA_ROOT", "data")
+ROOT = (Path(__file__).resolve().parents[1] / DATA_ROOT).resolve()
 ROOT.mkdir(parents=True, exist_ok=True)
 
 def pjoin(*parts) -> Path:

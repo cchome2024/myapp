@@ -22,9 +22,15 @@ def _do_step(project_id: str, step: str, config: Dict[str, Any]):
     elif step == "quiz":
         write_json(base / "quiz.json", {"questions": []})
     elif step == "images":
-        write_json(base / "images.json", {"items": []})
+        # 保留现有图片数据，如果不存在则创建空数组
+        existing_images = read_json(base / "images.json")
+        if existing_images is None:
+            write_json(base / "images.json", {"items": []})
     elif step == "ppt":
-        write_json(base / "slides.json", {"slides": []})
+        # 保留现有幻灯片数据，如果不存在则创建空数组
+        existing_slides = read_json(base / "slides.json")
+        if existing_slides is None:
+            write_json(base / "slides.json", {"slides": []})
     elif step == "publish":
         write_json(base / "publish" / "xiaohongshu" / "manifest.json", {
             "title":"示例标题","content":"示例文案 #话题","images":[]
